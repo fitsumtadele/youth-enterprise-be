@@ -8,18 +8,17 @@ const youthEnterpriseRoutes = require('./routes/youthEnterprise.route');
 const requestRoutes = require('./routes/request.route');
 const chatRoutes = require('./routes/chat.route');
 const offerRoutes = require('./routes/offer.route');
+const auth = require('./routes/auth.route');
 const dotenv = require("dotenv").config();
 
 const corsOptions = {
   origin: [
-    "http://localhost:4000",
-    "http://127.0.0.1:4000",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://192.168.2.115:3000",
     "http://localhost:5173",
     "http://192.168.100.10:5173",
     "http://127.0.0.1:5173",
- 
-    "https://property-listing.fergamitechnologies.com",
-    "https://fergamitechnologies.com",
  
   ], // Allow requests from this origin
   // origin: '*',
@@ -28,9 +27,10 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 const app = express();
-app.use(cors(corsOptions));
+app.use(cors(corsOptions)); 
+app.options('*', cors(corsOptions)); 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 
 // app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
@@ -44,6 +44,7 @@ app.use('/img', express.static(path.join(__dirname, 'img'), {
   }
 }));
 app.use('/users', userRoutes);
+app.use('/auth', auth);
 app.use('/youth-enterprises', youthEnterpriseRoutes);
 app.use('/requests', requestRoutes);
 app.use('/chats', chatRoutes);

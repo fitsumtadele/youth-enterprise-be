@@ -1,5 +1,6 @@
 const express = require("express");
 const {
+  addUser,
   deleteUser,
   getUser,
   getUsers,
@@ -10,6 +11,7 @@ const { verifyToken } = require("../middleware/verifyToken.js");
 
 const router = express.Router();
 
+router.post("/register", addUser);
 router.get("/", getUsers);
 router.get("/getSingleUser", verifyToken, getSingleUser);
 router.get("/", getUsers);

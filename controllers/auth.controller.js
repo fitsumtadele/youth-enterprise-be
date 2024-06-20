@@ -2,28 +2,31 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
 
+
 const register = async (req, res) => {
-  console.log(req.body);
-  const { username, email, phone, password, gender, dob, profession,role,requestedAdminRole } = req.body;
+  const { username, email, password } = req.body;
 
   try {
-    // HASH THE PASSWORD
+    // Check if the email is already registered
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already exists" });
+    }
+
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // CREATE A NEW USER AND SAVE TO DB
+    // Create a new user
     const newUser = await User.create({
       username,
       email,
-      phone,
       password: hashedPassword,
-      gender,
-      dob,
-      profession,
-      role,
-      requestedAdminRole
+      role: "requester",
     });
 
-    res.status(201).json({ message: "User created successfully" });
+    res
+      .status(201)
+      .json({ message: "User created successfully", user: newUser });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Failed to create user!" });

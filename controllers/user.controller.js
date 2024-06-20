@@ -21,6 +21,7 @@ const addUser = async (req, res) => {
       username,
       email,
       password: hashedPassword,
+      role: "requester",
     });
 
     res
