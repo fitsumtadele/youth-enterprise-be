@@ -35,6 +35,13 @@ const addChat = async (req, res) => {
 
 const getChatsByRequestId = async (req, res) => {
   const requestId = req.params.requestId;
+
+  // Check if requestId is a valid UUID
+  const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+  if (!uuidRegex.test(requestId)) {
+    return res.status(400).json({ message: "Invalid request ID format" });
+  }
+
   try {
     const chats = await Chat.findAll({ where: { requestId } });
     res.status(200).json(chats);

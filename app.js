@@ -1,4 +1,6 @@
 const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
@@ -8,31 +10,30 @@ const youthEnterpriseRoutes = require('./routes/youthEnterprise.route');
 const requestRoutes = require('./routes/request.route');
 const chatRoutes = require('./routes/chat.route');
 const offerRoutes = require('./routes/offer.route');
-const auth = require('./routes/auth.route');
 const dotenv = require("dotenv").config();
 
 const corsOptions = {
   origin: [
     "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://192.168.2.115:3000",
+    "http://127.0.0.1:4000",
     "http://localhost:5173",
     "http://192.168.100.10:5173",
     "http://127.0.0.1:5173",
- 
-  ], // Allow requests from this origin
-  // origin: '*',
-  credentials: true, // Allow cookies to be sent with requests
-  optionsSuccessStatus: 200, // Respond with 200 to OPTIONS requests
+    "https://property-listing.fergamitechnologies.com",
+    "https://fergamitechnologies.com",
+  ],
+  credentials: true,
+  optionsSuccessStatus: 200,
   allowedHeaders: ["Content-Type", "Authorization"],
 };
+
 const app = express();
-app.use(cors(corsOptions)); 
-app.options('*', cors(corsOptions)); 
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: corsOptions,
+});
 
-const PORT = process.env.PORT || 4000;
-
-// app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -44,12 +45,29 @@ app.use('/img', express.static(path.join(__dirname, 'img'), {
   }
 }));
 app.use('/users', userRoutes);
-app.use('/auth', auth);
 app.use('/youth-enterprises', youthEnterpriseRoutes);
 app.use('/requests', requestRoutes);
 app.use('/chats', chatRoutes);
 app.use('/offers', offerRoutes);
 
-app.listen(PORT, () => {
+io.on('connection', (socket) => {
+  console.log('A user connected:', socket.id);
+
+  socket.on('joinRoom', (room) => {
+    socket.join(room);
+    console.log(`User ${socket.id} joined room ${room}`);
+  });
+
+  socket.on('sendMessage', (message) => {
+    io.to(message.room).emit('receiveMessage', message);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  });
+});
+
+const PORT = process.env.PORT || 4000;
+server.listen(PORT, () => {
   console.log("Server is running! on port", PORT);
 });
