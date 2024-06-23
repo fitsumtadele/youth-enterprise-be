@@ -10,6 +10,7 @@ const youthEnterpriseRoutes = require('./routes/youthEnterprise.route');
 const requestRoutes = require('./routes/request.route');
 const chatRoutes = require('./routes/chat.route');
 const offerRoutes = require('./routes/offer.route');
+const auth = require('./routes/auth.route');
 const dotenv = require("dotenv").config();
 
 const corsOptions = {
@@ -46,6 +47,7 @@ app.use('/img', express.static(path.join(__dirname, 'img'), {
 }));
 app.use('/users', userRoutes);
 app.use('/youth-enterprises', youthEnterpriseRoutes);
+app.use('/auth', auth);
 app.use('/requests', requestRoutes);
 app.use('/chats', chatRoutes);
 app.use('/offers', offerRoutes);

@@ -24,11 +24,26 @@
 // };
 
 
+// module.exports = {
+//   HOST: "localhost",
+//   USER: "postgres",
+//   PASSWORD: "password",
+//   DB: "youth-enterprise",
+//   dialect: "postgres",
+//   pool: {
+//     max: 5,
+//     min: 0,
+//     acquire: 30000,
+//     idle: 10000,
+//   },
+// };  
+
+
 module.exports = {
   HOST: "localhost",
-  USER: "postgres",
-  PASSWORD: "password",
-  DB: "youth-enterprise",
+  USER: "youthdva_youthdva",
+  PASSWORD: "youthdva@1234",
+  DB: "youthdva_youth_enterprise",
   dialect: "postgres",
   pool: {
     max: 5,
@@ -36,7 +51,7 @@ module.exports = {
     acquire: 30000,
     idle: 10000,
   },
-};  
+}; 
   
 
 // module.exports = {
