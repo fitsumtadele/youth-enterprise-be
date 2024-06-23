@@ -20,8 +20,8 @@ const corsOptions = {
     "http://localhost:5173",
     "http://192.168.100.10:5173",
     "http://127.0.0.1:5173",
-    "https://property-listing.fergamitechnologies.com",
-    "https://fergamitechnologies.com",
+    "https://home.youthdigitalhealthalliance.com",
+    "https://youthdigitalhealthalliance.com"
   ],
   credentials: true,
   optionsSuccessStatus: 200,
