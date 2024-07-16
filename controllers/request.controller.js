@@ -54,7 +54,7 @@ const getRequest = async (req, res) => {
 
 const updateRequest = async (req, res) => {
   const id = req.params.id;
-  const { description, status, enterpriseId } = req.body;
+  const { status, enterpriseId } = req.body;
 
   try {
     const request = await Request.findByPk(id);
@@ -62,7 +62,7 @@ const updateRequest = async (req, res) => {
       return res.status(404).json({ message: "Request not found" });
     }
 
-    request.set({ description, status, enterpriseId });
+    request.set({ status, enterpriseId });
     await request.save();
 
     res.status(200).json(request);

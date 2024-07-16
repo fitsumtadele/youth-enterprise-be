@@ -54,6 +54,7 @@ const login = async (req, res) => {
         id: user.id,
         isAdmin: false,
         email: user.email,
+        role: user.role
       },
       process.env.JWT_SECRET_KEY, // Replace with your JWT secret key
       { expiresIn: "7d" }, // Token expires in 7 days
@@ -70,7 +71,7 @@ const login = async (req, res) => {
       })
       .json({
         success: true,
-        user: { id: user.id, username: user.username, email: user.email },
+        user: { id: user.id, username: user.username, email: user.email, role: user.role, token},
       });
 
     // console.log(user.id);
